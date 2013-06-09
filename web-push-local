@@ -1,0 +1,5 @@
+echo "no: $1  to: $2  option: $2 $3 $4 $5 $6"
+SV=$1
+TO=$2
+
+rsync -e "ssh -p ${SV}0" -r ${TO}/ vagrant@localhost:${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak'  $3 $4 $5 $6

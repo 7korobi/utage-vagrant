@@ -1,0 +1,14 @@
+#!/bin/sh
+
+APP=/www/giji_rails
+RUBY="~/.rbenv/bin/rbenv exec ruby "
+
+mkdir -p /utage/run /utage/log
+
+for TARGET in $1
+do
+  /www/utage/web-push-local $TARGET /utage    --delete &
+  /www/utage/web-push-local $TARGET /www/giji_rails  --delete &
+  /www/utage/web-push-local $TARGET /www/sow-giji  --delete &
+done
+

@@ -2,19 +2,23 @@
 # vi: set ft=ruby :
 
 def cent32(config, name, ports)
+  no = (ports.first / 10).to_s
   config.vm.define name do |pc|
     pc.vm.hostname = name.to_s
     pc.vm.box = "cent32-v6.4"
-    pc.ssh.default.port = ports.first
+
+#    pc.vm.network :private_network, ip: "192.168.11.#{no}"
     pc.vm.network :forwarded_port, guest: 3000, host: ports.last
+
+    pc.ssh.default.port = ports.first
     pc.vm.usable_port_range = ports
     pc.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "512"]
+      vb.customize ["modifyvm", :id, "--memory", "3072"]
     end
-    pc.vm.provision :shell do |sh|
-      sh.path = "init.rb"
-      sh.args =  (ports.first / 10).to_s
-    end
+#    pc.vm.provision :shell do |sh|
+#      sh.path = "init.rb"
+#      sh.args =  no
+#    end
   end
 end
 
@@ -35,9 +39,9 @@ end
 
 Vagrant.configure("2") do |config|
   cent32(config, :front,  2540..2549)
-  cent32(config, :worker, 2520..2529)
-  cent32(config, :resque, 2530..2539)
-  cent64(config, :mongo,  2490..2499)
+#  cent32(config, :worker, 2520..2529)
+#  cent32(config, :resque, 2530..2539)
+#  cent64(config, :mongo,  2490..2499)
 
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
